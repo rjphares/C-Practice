@@ -14,32 +14,34 @@ void drawAxisTicks(int width, int height, int spacing, int tickLength) {
     int halfWidth = width / 2;
     int halfHeight = height / 2;
     glColor3f(1.0f, 0.0f, 0.0f); // Red
-    glLineWidth(2.0f);
+    // glLineWidth(2.0f);
     glBegin(GL_LINES);
-    // X-axis ticks (vertical lines along y=0)
-    for (int x = -halfWidth; x <= halfWidth; x += spacing) {
-        if (x != 0) {
-            glVertex2i(x, -tickLength/2);
-            glVertex2i(x, tickLength/2);
+        // X-axis ticks (vertical lines along y=0)
+        for (int x = -halfWidth; x <= halfWidth; x += spacing) {
+            if (x == halfWidth) x--;
+            if (x != 0) {
+                glVertex2i(x, -tickLength/2);
+                glVertex2i(x, tickLength/2);
+            }
         }
-    }
-    // Y-axis ticks (horizontal lines along x=0)
-    for (int y = -halfHeight; y <= halfHeight; y += spacing) {
-        if (y != 0) {
-            glVertex2i(-tickLength/2, y);
-            glVertex2i(tickLength/2, y);
+        // Y-axis ticks (horizontal lines along x=0)
+        for (int y = -halfHeight; y <= halfHeight; y += spacing) {
+            if (y == halfHeight) y--;
+            if (y != 0) {
+                glVertex2i(-tickLength/2, y);
+                glVertex2i(tickLength/2, y);
+            }
         }
-    }
     glEnd();
     // Draw main axes
-    glLineWidth(3.0f);
+    // glLineWidth(3.0f);
     glBegin(GL_LINES);
     // y-axis (x=0)
-    glVertex2i(0, -halfHeight);
-    glVertex2i(0, halfHeight);
-    // x-axis (y=0)
-    glVertex2i(-halfWidth, 0);
-    glVertex2i(halfWidth, 0);
+        glVertex2i(0, -halfHeight);
+        glVertex2i(0, halfHeight);
+        // x-axis (y=0)
+        glVertex2i(-halfWidth, 0);
+        glVertex2i(halfWidth, 0);
     glEnd();
 }
 
@@ -72,7 +74,7 @@ int main(int argc, char *argv[])
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-width/2, width/2, -height/2, height/2, -1, 1); // Center origin
+    glOrtho(-width / 2 - 1, width / 2 - 1, -height / 2, height / 2, -1, 1); // Center origin
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
