@@ -62,21 +62,21 @@ int main(int argc, char *argv[])
 {
     SDL_Window *win = NULL;
     SDL_GLContext gl_context;
-    int width = 800, height = 800;
+    int width = 801, height = 801;
     bool loopShouldStop = false;
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    win = SDL_CreateWindow("Hello World", width, height, SDL_WINDOW_OPENGL);
+    win = SDL_CreateWindow("Hello World", 100, 100, SDL_WINDOW_OPENGL);
     gl_context = SDL_GL_CreateContext(win);
 
     // Set up OpenGL viewport and projection
-    glViewport(0, 0, width, height);
+    glViewport(0, 0, width , height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-width / 2, width / 2, -height / 2, height / 2, -1, 1); // Center origin
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    // glOrtho(-400, 400, -400, 400, -1, 1); // Center origin
+    // glMatrixMode(GL_MODELVIEW);
+    // glLoadIdentity();
 
     int mouseX = 0, mouseY = 0;
     while (!loopShouldStop)
@@ -98,16 +98,22 @@ int main(int argc, char *argv[])
             }
         }
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        drawAxisTicks(width, height, 20, 10); // 20px spacing, 10px tick length
-        drawLog(400);
-                glColor3f(0.0f, 1.0f, 0.0f); // Green
-        glBegin(GL_LINES);
-            glVertex2i(-399, -height/2);
-            glVertex2i(-399, height/2);
-        glEnd();
-        //draw rectable filled
+        // drawAxisTicks(width, height, 20, 10); // 20px spacing, 10px tick length
+        // drawLog(400);
+        // glColor3f(0.0f, 0.0f, 1.0f); // Green
+        // glBegin(GL_QUADS);
+        //     glVertex2i(0, -height/2);
+        //     glVertex2i(0, height/2);
+        //     glVertex2i(1, height/2);
+        //     glVertex2i(1, -height/2);
+        // glEnd();  
+        // glColor3f(0.0f, 1.0f, 0.0f); // Green
+        // glBegin(GL_LINES);
+        //     glVertex2i(-1, -height/2);
+        //     glVertex2i(-1, height/2);
+        // glEnd();
         SDL_GL_SwapWindow(win);
     }
 
