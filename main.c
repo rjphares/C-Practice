@@ -14,32 +14,23 @@ void drawAxisTicks(int width, int height, int spacing, int tickLength) {
     int halfWidth = width / 2;
     int halfHeight = height / 2;
     glColor3f(1.0f, 0.0f, 0.0f); // Red
-    // glLineWidth(2.0f);
     glBegin(GL_LINES);
-        // X-axis ticks (vertical lines along y=0)
-        for (int x = -halfWidth + 1; x <= halfWidth; x += spacing) {
-            // if (x == halfWidth) x--;
+        for (int x = -halfWidth; x <= halfWidth; x += spacing) {
             if (x != 0) {
                 glVertex2i(x, -tickLength/2);
                 glVertex2i(x, tickLength/2);
             }
         }
-        // Y-axis ticks (horizontal lines along x=0)
-        for (int y = -halfHeight + 1; y <= halfHeight; y += spacing) {
-            // if (y == halfHeight) y--;
+        for (int y = -halfHeight; y <= halfHeight; y += spacing) {
             if (y != 0) {
                 glVertex2i(-tickLength/2, y);
                 glVertex2i(tickLength/2, y);
             }
         }
     glEnd();
-    // Draw main axes
-    // glLineWidth(3.0f);
     glBegin(GL_LINES);
-    // y-axis (x=0)
         glVertex2i(0, -halfHeight);
         glVertex2i(0, halfHeight);
-        // x-axis (y=0)
         glVertex2i(-halfWidth, 0);
         glVertex2i(halfWidth, 0);
     glEnd();
@@ -62,21 +53,20 @@ int main(int argc, char *argv[])
 {
     SDL_Window *win = NULL;
     SDL_GLContext gl_context;
-    int width = 801, height = 801;
+    int width = 800, height = 800;
     bool loopShouldStop = false;
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    win = SDL_CreateWindow("Hello World", 100, 100, SDL_WINDOW_OPENGL);
+    win = SDL_CreateWindow("Hello World", width, height, SDL_WINDOW_OPENGL);
     gl_context = SDL_GL_CreateContext(win);
 
-    // Set up OpenGL viewport and projection
     glViewport(0, 0, width , height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // glOrtho(-400, 400, -400, 400, -1, 1); // Center origin
-    // glMatrixMode(GL_MODELVIEW);
-    // glLoadIdentity();
+    glOrtho(-width/2, width/2, -height/2, height/2, -1, 1); // Center origin
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
     int mouseX = 0, mouseY = 0;
     while (!loopShouldStop)
@@ -93,27 +83,16 @@ int main(int argc, char *argv[])
                     mouseX = event.motion.x;
                     mouseY = event.motion.y;
                     // Convert to Cartesian coordinates (origin at center)
-                    printf("Mouse: (%d, %d)\n", mouseX - width/2, height/2 - mouseY);
+                    printf("Mouse: (%d, %d)\n", mouseX, mouseY);
                     break;
             }
         }
 
-        glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        // drawAxisTicks(width, height, 20, 10); // 20px spacing, 10px tick length
-        // drawLog(400);
-        // glColor3f(0.0f, 0.0f, 1.0f); // Green
-        // glBegin(GL_QUADS);
-        //     glVertex2i(0, -height/2);
-        //     glVertex2i(0, height/2);
-        //     glVertex2i(1, height/2);
-        //     glVertex2i(1, -height/2);
-        // glEnd();  
-        // glColor3f(0.0f, 1.0f, 0.0f); // Green
-        // glBegin(GL_LINES);
-        //     glVertex2i(-1, -height/2);
-        //     glVertex2i(-1, height/2);
-        // glEnd();
+        drawAxisTicks(width, height, 20, 10); // 20px spacing, 10px tick length
+        drawLog(400);
+
         SDL_GL_SwapWindow(win);
     }
 
