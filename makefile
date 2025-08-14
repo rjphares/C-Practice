@@ -1,2 +1,5 @@
 windows:
 	gcc main.c -o main -IC:\Users\rjpha\Downloads\SDL3-devel-3.2.20-mingw\SDL3-3.2.20\x86_64-w64-mingw32\include -LC:\Users\rjpha\Downloads\SDL3-devel-3.2.20-mingw\SDL3-3.2.20\x86_64-w64-mingw32\lib -lSDL3 -lopengl32
+
+linux:
+	gcc main.c -o main -lSDL3 -lGL -lm
