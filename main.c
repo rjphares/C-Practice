@@ -17,16 +17,16 @@ void drawAxisTicks(int width, int height, int spacing, int tickLength) {
     // glLineWidth(2.0f);
     glBegin(GL_LINES);
         // X-axis ticks (vertical lines along y=0)
-        for (int x = -halfWidth; x <= halfWidth; x += spacing) {
-            if (x == halfWidth) x--;
+        for (int x = -halfWidth + 1; x <= halfWidth; x += spacing) {
+            // if (x == halfWidth) x--;
             if (x != 0) {
                 glVertex2i(x, -tickLength/2);
                 glVertex2i(x, tickLength/2);
             }
         }
         // Y-axis ticks (horizontal lines along x=0)
-        for (int y = -halfHeight; y <= halfHeight; y += spacing) {
-            if (y == halfHeight) y--;
+        for (int y = -halfHeight + 1; y <= halfHeight; y += spacing) {
+            // if (y == halfHeight) y--;
             if (y != 0) {
                 glVertex2i(-tickLength/2, y);
                 glVertex2i(tickLength/2, y);
@@ -74,10 +74,11 @@ int main(int argc, char *argv[])
     glViewport(0, 0, width, height);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    glOrtho(-width / 2 - 1, width / 2 - 1, -height / 2, height / 2, -1, 1); // Center origin
+    glOrtho(-width / 2, width / 2, -height / 2, height / 2, -1, 1); // Center origin
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+    int mouseX = 0, mouseY = 0;
     while (!loopShouldStop)
     {
         SDL_Event event;
@@ -88,14 +89,26 @@ int main(int argc, char *argv[])
                 case SDL_EVENT_QUIT:
                     loopShouldStop = true;
                     break;
+                case SDL_EVENT_MOUSE_MOTION:
+                    mouseX = event.motion.x;
+                    mouseY = event.motion.y;
+                    // Convert to Cartesian coordinates (origin at center)
+                    printf("Mouse: (%d, %d)\n", mouseX - width/2, height/2 - mouseY);
+                    break;
             }
         }
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    drawAxisTicks(width, height, 20, 10); // 20px spacing, 10px tick length
-    drawLog(400);
-    SDL_GL_SwapWindow(win);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        drawAxisTicks(width, height, 20, 10); // 20px spacing, 10px tick length
+        drawLog(400);
+                glColor3f(0.0f, 1.0f, 0.0f); // Green
+        glBegin(GL_LINES);
+            glVertex2i(-399, -height/2);
+            glVertex2i(-399, height/2);
+        glEnd();
+        //draw rectable filled
+        SDL_GL_SwapWindow(win);
     }
 
     SDL_GL_DestroyContext(gl_context);
